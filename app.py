@@ -59,6 +59,7 @@ def carregar_config():
     # valores padrão (usados enquanto ela não mudar nada)
     config = {
         "nome_loja": "Brechó Da Zabe",
+        "subtitulo": "",
         "endereco": "",
         "instagram": "",
         "whatsapp": "",
@@ -301,6 +302,7 @@ def configuracoes():
             config["nome_loja"] = nome_loja
 
         config["endereco"] = request.form["endereco"].strip()
+        config["subtitulo"] = request.form["subtitulo"].strip()
 
         # tira o @ se ela digitar, e os espaços
         config["instagram"] = request.form["instagram"].replace("@", "").strip()

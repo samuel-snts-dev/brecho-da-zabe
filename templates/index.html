@@ -13,7 +13,13 @@
     <header class="topo">
         <div class="logo">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo {{ config.nome_loja }}">
-            <span>{{ config.nome_loja }}</span>
+
+            <div class="logo-textos">
+                <span>{{ config.nome_loja }}</span>
+                {% if config.subtitulo %}
+                    <small class="subtitulo">{{ config.subtitulo }}</small>
+                {% endif %}
+            </div>
         </div>
 
         <section class="carrossel">
