@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topo topo-admin">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <span>Painel</span>
+        </div>
+        <nav class="menu">
+            <a href="/admin/configuracoes">Configurações</a>
+            <a href="/">Ver site</a>
+            <a href="/sair">Sair</a>
+        </nav>
+    </header>
+
+    <main class="painel">
+
+        <!-- ---------- CADASTRAR PEÇA ---------- -->
+
+        <h2>Cadastrar peça</h2>
+        <form method="POST" action="/admin/adicionar" enctype="multipart/form-data" class="formulario">
+            <input type="text" name="nome" placeholder="Nome da peça" required>
+            <input type="text" name="tamanho" placeholder="Tamanho" required>
+            <input type="text" name="preco" placeholder="Preço (ex: 45,00)" required>
+
+            <select name="categoria" required>
+                {% for cat in categorias %}
+                    <option value="{{ cat }}">{{ cat }}</option>
+                {% endfor %}
+            </select>
+
+            <input type="file" name="foto" accept="image/*" required onchange="mostrarPrevia(this, 'previa-peca')">
+            <img id="previa-peca" class="previa">
+
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <!-- ---------- PEÇAS CADASTRADAS ---------- -->
+
+        <h2>Peças cadastradas</h2>
+
+        {% if not pecas %}
+            <p>Nenhuma peça cadastrada ainda.</p>
+        {% endif %}
+
+        {% for peca in pecas %}
+        <div class="item-admin {% if peca.vendida %}item-vendido{% endif %}">
+            <img src="{{ url_for('static', filename='fotos/' + peca.foto) }}" alt="{{ peca.nome }}">
+
+            <div>
+                {% if peca.vendida %}
+                    <span class="selo-vendida">VENDIDA</span><br>
+                {% endif %}
+                <strong>{{ peca.nome }}</strong> ({{ peca.tamanho }}) - {{ peca.categoria }}<br>
+                R$ {{ "%.2f"|format(peca.preco)|replace(".", ",") }}
+                {% if peca.promocao > 0 %}
+                    → <span class="selo">R$ {{ "%.2f"|format(peca.promocao)|replace(".", ",") }}</span>
+                {% endif %}
+            </div>
+
+            <a href="/admin/editar/{{ loop.index0 }}" class="botao-editar">Editar</a>
+
+            <form method="POST" action="/admin/promocao/{{ loop.index0 }}">
+                <input type="text" name="promocao" placeholder="Preço promo">
+                <button type="submit">Salvar promoção</button>
+            </form>
+
+            <form method="POST" action="/admin/vendida/{{ loop.index0 }}">
+                {% if peca.vendida %}
+                    <button type="submit" class="botao-voltar-vitrine">Voltar pra vitrine</button>
+                {% else %}
+                    <button type="submit" class="botao-vendida">Marcar como vendida</button>
+                {% endif %}
+            </form>
+
+            <form method="POST" action="/admin/remover/{{ loop.index0 }}" onsubmit="return confirm('Tem certeza que quer remover {{ peca.nome }}? Isso não dá pra desfazer.')">
+                <button type="submit" class="botao-remover">Remover</button>
+            </form>
+        </div>
+        {% endfor %}
+
+        <!-- ---------- BANNERS ---------- -->
+
+        <h2>Banners do topo</h2>
+
+        <form method="POST" action="/admin/banner/adicionar" enctype="multipart/form-data" class="formulario">
+            <p class="dica">Use imagens deitadas, de preferência 1920 x 500.</p>
+            <input type="file" name="imagem" accept="image/*" required onchange="mostrarPrevia(this, 'previa-banner')">
+            <img id="previa-banner" class="previa previa-banner">
+            <button type="submit">Adicionar banner</button>
+        </form>
+
+        {% if not banners %}
+            <p>Nenhum banner cadastrado.</p>
+        {% endif %}
+
+        {% for banner in banners %}
+        <div class="item-admin banner-admin">
+            <img src="{{ url_for('static', filename='banners/' + banner) }}" alt="Banner">
+            <span>Banner {{ loop.index }}</span>
+
+            <form method="POST" action="/admin/banner/remover/{{ loop.index0 }}" onsubmit="return confirm('Tem certeza que quer remover esse banner?')">
+                <button type="submit" class="botao-remover">Remover</button>
+            </form>
+        </div>
+        {% endfor %}
+
+    </main>
+
+    <script>
+        // mostra a imagem escolhida antes de enviar
+        function mostrarPrevia(campo, idImagem) {
+            let imagem = document.getElementById(idImagem);
+            let arquivo = campo.files[0];
+
+            if (arquivo) {
+                imagem.src = URL.createObjectURL(arquivo);
+                imagem.style.display = "block";
+            } else {
+                imagem.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

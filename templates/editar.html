@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar peça</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topo topo-admin">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <span>Painel</span>
+        </div>
+        <nav class="menu">
+            <a href="/admin">Voltar</a>
+            <a href="/sair">Sair</a>
+        </nav>
+    </header>
+
+    <main class="painel">
+        <h2>Editar peça</h2>
+
+        <form method="POST" enctype="multipart/form-data" class="formulario">
+            <label>Nome</label>
+            <input type="text" name="nome" value="{{ peca.nome }}" required>
+
+            <label>Tamanho</label>
+            <input type="text" name="tamanho" value="{{ peca.tamanho }}" required>
+
+            <label>Preço</label>
+            <input type="text" name="preco" value="{{ '%.2f'|format(peca.preco)|replace('.', ',') }}" required>
+
+            <label>Categoria</label>
+            <select name="categoria" required>
+                {% for cat in categorias %}
+                    <option value="{{ cat }}" {% if peca.categoria == cat %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Foto atual</label>
+            <img src="{{ url_for('static', filename='fotos/' + peca.foto) }}" alt="{{ peca.nome }}" class="foto-atual" id="previa-editar">
+
+            <label>Trocar foto (opcional)</label>
+            <input type="file" name="foto" accept="image/*" onchange="mostrarPrevia(this, 'previa-editar')">
+
+            <button type="submit">Salvar alterações</button>
+            <a href="/admin" class="link-cancelar">Cancelar</a>
+        </form>
+    </main>
+
+    <script>
+        // mostra a imagem escolhida antes de enviar
+        function mostrarPrevia(campo, idImagem) {
+            let imagem = document.getElementById(idImagem);
+            let arquivo = campo.files[0];
+
+            if (arquivo) {
+                imagem.src = URL.createObjectURL(arquivo);
+                imagem.style.display = "block";
+            } else {
+                imagem.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - {{ config.nome_loja }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="login-pagina">
+
+        <!-- ---------- LADO ESQUERDO (colorido) ---------- -->
+
+        <section class="login-esquerda">
+            <div class="bolha bolha-1"></div>
+            <div class="bolha bolha-2"></div>
+            <div class="bolha bolha-3"></div>
+
+            <div class="login-boas-vindas">
+                <h1>Bem-vinda à área da loja</h1>
+                <p>Cadastre peças, crie promoções e deixe a vitrine sempre nova</p>
+            </div>
+        </section>
+
+        <!-- ---------- LADO DIREITO (branco) ---------- -->
+
+        <section class="login-direita">
+            <div class="login-caixa">
+                <div class="login-logo">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo {{ config.nome_loja }}">
+                    <span>{{ config.nome_loja }}</span>
+                </div>
+
+                <form method="POST">
+                    <div class="campo-icone">
+                        <input type="text" name="usuario" placeholder="Usuário" required>
+                        <span class="icone">👤</span>
+                    </div>
+
+                    <div class="campo-icone">
+                        <input type="password" name="senha" placeholder="Senha" required>
+                        <span class="icone">🔒</span>
+                    </div>
+
+                    {% if erro %}
+                        <p class="erro">{{ erro }}</p>
+                    {% endif %}
+
+                    <button type="submit" class="botao-entrar">ENTRAR</button>
+                </form>
+
+                <a href="/" class="voltar-site">← Voltar para o site</a>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>

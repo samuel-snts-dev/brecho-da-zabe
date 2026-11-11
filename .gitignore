@@ -1,0 +1,11 @@
+# dados da loja (senha, contato, peças)
+config.json
+pecas.json
+banners.json
+
+# imagens enviadas pelo painel
+static/fotos/
+static/banners/
+
+# arquivos que o Python cria sozinho
+__pycache__/

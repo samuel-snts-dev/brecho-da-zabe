@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topo topo-admin">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <span>Painel</span>
+        </div>
+        <nav class="menu">
+            <a href="/admin">Voltar</a>
+            <a href="/sair">Sair</a>
+        </nav>
+    </header>
+
+    <main class="painel">
+        <h2>Configurações</h2>
+
+        {% if mensagem %}
+            <p class="mensagem-sucesso">{{ mensagem }}</p>
+        {% endif %}
+
+        {% if erro %}
+            <p class="mensagem-erro">{{ erro }}</p>
+        {% endif %}
+
+        <!-- ---------- INFORMAÇÕES DA LOJA ---------- -->
+
+        <h3>Informações da loja</h3>
+        <form method="POST" action="/admin/configuracoes" class="formulario">
+            <label>Nome da loja</label>
+            <input type="text" name="nome_loja" value="{{ config.nome_loja }}" required>
+
+            <label>Endereço</label>
+            <input type="text" name="endereco" value="{{ config.endereco }}" placeholder="ex: Rua das Flores, 123 - Centro, Betim - MG">
+
+            <label>Instagram (só o nome do perfil)</label>
+            <input type="text" name="instagram" value="{{ config.instagram }}" placeholder="ex: brechodazabe">
+
+            <label>WhatsApp (com DDD)</label>
+            <input type="text" name="whatsapp" value="{{ config.whatsapp }}" placeholder="ex: (31) 99999-8888">
+
+            <p class="dica">Deixe em branco o que ainda não tiver. O que estiver vazio não aparece no site.</p>
+
+            <button type="submit">Salvar informações</button>
+        </form>
+
+        <!-- ---------- CONTA DE ACESSO ---------- -->
+
+        <h3>Conta de acesso</h3>
+        <form method="POST" action="/admin/conta" class="formulario">
+            <label>Usuário</label>
+            <input type="text" name="usuario" value="{{ config.usuario }}" required>
+
+            <label>Nova senha</label>
+            <input type="password" name="nova_senha" placeholder="Deixe em branco pra não trocar">
+
+            <label>Confirmar nova senha</label>
+            <input type="password" name="confirmar_senha" placeholder="Digite a nova senha de novo">
+
+            <label>Senha atual (obrigatória pra salvar)</label>
+            <input type="password" name="senha_atual" required>
+
+            <button type="submit">Salvar conta</button>
+        </form>
+    </main>
+</body>
+</html>

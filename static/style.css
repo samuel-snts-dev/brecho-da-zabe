@@ -1,0 +1,752 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ---------- TOPO ---------- */
+
+.topo {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #C45A2B;
+    padding: 10px 30px;
+    height: 175px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: black;
+}
+
+.logo span {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.menu a:hover {
+    background-color: #C45A2B;
+    text-decoration: none;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- CARROSSEL ---------- */
+
+.carrossel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.slide.ativo {
+    opacity: 1;
+}
+
+.seta {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 24px;
+    padding: 10px 15px;
+    border-radius: 50%;
+}
+
+.seta:hover {
+    background-color: #C45A2B;
+}
+
+.esquerda {
+    left: 15px;
+}
+
+.direita {
+    right: 15px;
+}
+
+/* ---------- CATEGORIAS ---------- */
+
+.categorias {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.categorias a {
+    color: white;
+    text-decoration: none;
+    border: 2px solid #C45A2B;
+    padding: 8px 18px;
+    border-radius: 20px;
+}
+
+.categorias a:hover,
+.categorias a.ativa {
+    background-color: #C45A2B;
+}
+
+/* ---------- VITRINE ---------- */
+
+.vitrine {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background-color: #1a1a1a;
+    width: 220px;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
+}
+
+.card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.preco {
+    color: #C45A2B;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.preco-antigo {
+    text-decoration: line-through;
+    color: #888;
+    margin-bottom: 0;
+}
+
+.selo {
+    background-color: #C45A2B;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* ---------- RODAPÉ ---------- */
+
+footer {
+    text-align: center;
+    padding: 8px;
+    background-color: #C45A2B;
+    color: white;
+    margin-top: auto;
+}
+
+footer p {
+    margin: 4px 0;
+}
+
+.link-admin {
+    color: white;
+    font-size: 12px;
+    opacity: 0.6;
+    text-decoration: none;
+}
+
+.link-admin:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* ---------- ADMIN ---------- */
+
+.painel {
+    max-width: 800px;
+    width: 100%;
+    margin: 30px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.formulario input,
+.formulario select,
+.item-admin input {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+}
+
+button {
+    background-color: #C45A2B;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.botao-remover {
+    background-color: #555;
+}
+
+.item-admin {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+    background-color: #1a1a1a;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.item-admin img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.item-admin form {
+    display: flex;
+    gap: 5px;
+}
+
+.erro {
+    color: #ff6b6b;
+}
+
+/* ---------- CELULAR ---------- */
+
+/* logo e menu em cima, carrossel embaixo ocupando a largura */
+@media (max-width: 800px) {
+    .topo {
+        flex-wrap: wrap;
+    }
+
+}
+
+.logo,
+.menu {
+    position: relative;
+    z-index: 1;
+}
+
+.menu a,
+.logo span {
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.topo-admin {
+    height: auto;
+}
+
+/* ---------- ADMIN: BANNERS ---------- */
+
+.banner-admin img {
+    width: 200px;
+    height: 60px;
+}
+
+.dica {
+    margin: 0;
+    font-size: 13px;
+    color: #aaa;
+}
+
+.categoria-card {
+    margin-top: -10px;
+    font-size: 13px;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ---------- EDITAR PEÇA ---------- */
+
+.botao-editar {
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.botao-editar:hover {
+    background-color: #555;
+}
+
+.formulario label {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: -5px;
+}
+
+.foto-atual {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.link-cancelar {
+    color: #aaa;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* ---------- LOGIN ---------- */
+
+.login-pagina {
+    display: flex;
+    flex: 1;
+    font-family: 'Quicksand', Arial, sans-serif;
+}
+
+/* lado colorido */
+.login-esquerda {
+    position: relative;
+    flex: 1.5;
+    background: linear-gradient(135deg, #000000, #C45A2B);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 120px;
+    overflow: hidden;
+
+    /* faz a curva no lado direito */
+    clip-path: ellipse(100% 120% at 0% 50%);
+}
+
+.login-boas-vindas {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: white;
+    padding: 0 20px;
+}
+
+.login-boas-vindas h1 {
+    font-size: 36px;
+    margin-bottom: 5px;
+}
+
+.login-boas-vindas p {
+    font-size: 20px;
+    margin: 0;
+}
+
+/* bolinhas de enfeite */
+.bolha {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+}
+
+.bolha-1 {
+    width: 220px;
+    height: 220px;
+    top: 15%;
+    left: 10%;
+    background: linear-gradient(135deg, #C45A2B, #f0a04b);
+}
+
+.bolha-2 {
+    width: 120px;
+    height: 120px;
+    top: 30%;
+    right: 20%;
+    background: linear-gradient(135deg, #f0a04b, #C45A2B);
+}
+
+.bolha-3 {
+    width: 70px;
+    height: 70px;
+    top: 10%;
+    right: 35%;
+    background: white;
+    opacity: 0.2;
+}
+
+/* lado branco */
+.login-direita {
+    flex: 1;
+    background-color: white;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-caixa {
+    width: 100%;
+    max-width: 380px;
+    padding: 20px;
+}
+
+.login-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.login-logo img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: black;
+}
+
+.login-logo span {
+    font-size: 40px;
+    font-weight: 700;
+    color: #000;
+}
+
+/* campo com o cadeado dentro */
+.campo-icone {
+    position: relative;
+}
+
+.campo-icone input {
+    width: 100%;
+    padding: 16px;
+    padding-right: 45px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: 'Quicksand', Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.campo-icone input:focus {
+    outline: none;
+    border-color: #C45A2B;
+}
+
+.campo-icone .icone {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.botao-entrar {
+    width: 100%;
+    margin-top: 20px;
+    padding: 16px;
+    font-size: 15px;
+    letter-spacing: 1px;
+    font-family: 'Quicksand', Arial, sans-serif;
+}
+
+.botao-entrar:hover {
+    background-color: #a84a22;
+}
+
+.voltar-site {
+    display: block;
+    text-align: center;
+    margin-top: 25px;
+    color: #C45A2B;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.voltar-site:hover {
+    text-decoration: underline;
+}
+
+/* no celular some o lado colorido */
+@media (max-width: 800px) {
+    .login-esquerda {
+        display: none;
+    }
+}
+
+/* ---------- EFEITOS DO LOGIN ---------- */
+
+/* 1. degradê se mexendo devagar */
+.login-esquerda {
+    background: linear-gradient(135deg, #000000, #C45A2B, #000000, #C45A2B);
+    background-size: 300% 300%;
+    animation: degrade 12s ease infinite;
+}
+
+@keyframes degrade {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 2. bolhas flutuando */
+.bolha-1 { animation: flutuar 6s ease-in-out infinite; }
+.bolha-2 { animation: flutuar 8s ease-in-out infinite; }
+.bolha-3 { animation: flutuar 5s ease-in-out infinite; }
+
+@keyframes flutuar {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-25px); }
+    100% { transform: translateY(0); }
+}
+
+/* 3. caixa do login e texto aparecendo quando a página abre */
+.login-caixa,
+.login-boas-vindas {
+    animation: aparecer 0.8s ease-out;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 4. logo girando de leve ao passar o mouse */
+.login-logo img {
+    transition: transform 0.6s;
+}
+
+.login-logo img:hover {
+    transform: rotate(360deg);
+}
+
+/* 5. botão subindo um pouquinho ao passar o mouse */
+.botao-entrar {
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.botao-entrar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(196, 90, 43, 0.4);
+}
+
+/* 6. campo de senha brilhando quando clica nele */
+.campo-icone input {
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.campo-icone input:focus {
+    box-shadow: 0 0 0 3px rgba(196, 90, 43, 0.2);
+}
+
+/* ---------- CONTATO ---------- */
+
+.contato {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #111;
+    margin-top: 30px;
+}
+
+.contato h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.contato p {
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+.contato-botoes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.botao-instagram,
+.botao-direct {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 14px 28px;
+    border-radius: 30px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* degradê com as cores do Instagram */
+.botao-instagram {
+    background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af);
+}
+
+.botao-direct {
+    border: 2px solid white;
+}
+
+.botao-instagram:hover,
+.botao-direct:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+footer .contato-botoes {
+    margin: 15px 0;
+}
+
+footer .link-admin {
+    display: inline-block;
+    margin-top: 5px;
+}
+
+/* ---------- CONFIGURAÇÕES ---------- */
+
+.botao-whatsapp {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 14px 28px;
+    border-radius: 30px;
+    background-color: #25D366;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.botao-whatsapp:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+.mensagem-sucesso {
+    background-color: #1e4620;
+    color: #8fe39a;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+/* espaço entre os campos do login */
+.campo-icone {
+    margin-bottom: 15px;
+}
+
+/* título das partes da página de configurações */
+.painel h3 {
+    margin-top: 35px;
+    color: #C45A2B;
+}
+
+.mensagem-erro {
+    background-color: #4a1e1e;
+    color: #ff9a9a;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+/* ---------- VENDIDA ---------- */
+
+.item-vendido {
+    opacity: 0.5;
+}
+
+.selo-vendida {
+    background-color: #555;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.botao-vendida {
+    background-color: #2e7d32;
+}
+
+.botao-voltar-vitrine {
+    background-color: #1565c0;
+}
+
+/* ---------- ENDEREÇO NO RODAPÉ ---------- */
+
+.endereco a {
+    color: white;
+    text-decoration: none;
+}
+
+.endereco a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- PRÉVIA DA FOTO ---------- */
+
+.previa {
+    display: none;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.previa-banner {
+    width: 100%;
+    height: 120px;
+}

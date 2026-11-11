@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ config.nome_loja }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- ---------- TOPO ---------- -->
+
+    <header class="topo">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo {{ config.nome_loja }}">
+            <span>{{ config.nome_loja }}</span>
+        </div>
+
+        <section class="carrossel">
+            {% for banner in banners %}
+                <img src="{{ url_for('static', filename='banners/' + banner) }}" class="slide {% if loop.first %}ativo{% endif %}" alt="Banner">
+            {% endfor %}
+        </section>
+
+        <nav class="menu">
+            <a href="/">Início</a>
+            <a href="#pecas">Peças</a>
+            <a href="#contato">Contato</a>
+        </nav>
+    </header>
+
+    <!-- ---------- CATEGORIAS ---------- -->
+
+    <nav class="categorias" id="pecas">
+        <a href="/#pecas" class="{% if not categoria_atual %}ativa{% endif %}">Todas</a>
+
+        {% for cat in categorias %}
+            <a href="/?categoria={{ cat }}#pecas" class="{% if categoria_atual == cat %}ativa{% endif %}">{{ cat }}</a>
+        {% endfor %}
+    </nav>
+
+    <!-- ---------- VITRINE ---------- -->
+
+    <main class="vitrine">
+        {% if pecas %}
+            {% for peca in pecas %}
+            <div class="card">
+                <img src="{{ url_for('static', filename='fotos/' + peca.foto) }}" alt="{{ peca.nome }}">
+                <h2>{{ peca.nome }}</h2>
+                <p class="categoria-card">{{ peca.categoria }}</p>
+                <p>Tamanho: {{ peca.tamanho }}</p>
+
+                {% if peca.promocao > 0 %}
+                    <span class="selo">PROMOÇÃO</span>
+                    <p class="preco-antigo">R$ {{ "%.2f"|format(peca.preco)|replace(".", ",") }}</p>
+                    <p class="preco">R$ {{ "%.2f"|format(peca.promocao)|replace(".", ",") }}</p>
+                {% else %}
+                    <p class="preco">R$ {{ "%.2f"|format(peca.preco)|replace(".", ",") }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>Em breve, novas peças por aqui!</p>
+        {% endif %}
+    </main>
+
+    <!-- ---------- RODAPÉ / CONTATO ---------- -->
+
+    <footer id="contato">
+        <p>Gostou de alguma peça? Chama a gente!</p>
+
+        <div class="contato-botoes">
+            {% if config.instagram %}
+                <a href="https://instagram.com/{{ config.instagram }}" target="_blank" class="botao-instagram">
+                    Seguir @{{ config.instagram }}
+                </a>
+                <a href="https://ig.me/m/{{ config.instagram }}" target="_blank" class="botao-direct">
+                    Mandar mensagem
+                </a>
+            {% endif %}
+
+            {% if config.whatsapp %}
+                <a href="https://wa.me/{{ config.whatsapp }}" target="_blank" class="botao-whatsapp">
+                    WhatsApp
+                </a>
+            {% endif %}
+        </div>
+
+        {% if config.endereco %}
+            <p class="endereco">
+                📍 <a href="https://www.google.com/maps/search/?api=1&query={{ config.endereco|urlencode }}" target="_blank">
+                    {{ config.endereco }}
+                </a>
+            </p>
+        {% endif %}
+
+        <a href="/login" class="link-admin">Área da loja</a>
+    </footer>
+
+    <!-- ---------- SCRIPT DO CARROSSEL ---------- -->
+
+    <script>
+        let slides = document.querySelectorAll(".slide");
+        let atual = 0;
+
+        function mostrar(numero) {
+            slides[atual].classList.remove("ativo");
+            atual = numero;
+            slides[atual].classList.add("ativo");
+        }
+
+        function avancar() {
+            let proximo = atual + 1;
+            if (proximo == slides.length) {
+                proximo = 0;
+            }
+            mostrar(proximo);
+        }
+
+        function voltar() {
+            let anterior = atual - 1;
+            if (anterior < 0) {
+                anterior = slides.length - 1;
+            }
+            mostrar(anterior);
+        }
+
+        // só fica trocando se tiver mais de 1 banner
+        if (slides.length > 1) {
+            setInterval(avancar, 5000);
+        }
+    </script>
+
+</body>
+</html>
