@@ -39,8 +39,8 @@
                     </div>
 
                     <div class="campo-icone">
-                        <input type="password" name="senha" placeholder="Senha" required>
-                        <span class="icone">🔒</span>
+                        <input type="password" name="senha" id="campo-senha" placeholder="Senha" required>
+                        <button type="button" class="botao-olho" onclick="mostrarSenha('campo-senha', this)">👁️</button>
                     </div>
 
                     {% if erro %}
@@ -55,5 +55,20 @@
         </section>
 
     </div>
+
+    <script>
+        // troca entre mostrar e esconder a senha
+        function mostrarSenha(idCampo, botao) {
+            let campo = document.getElementById(idCampo);
+
+            if (campo.type == "password") {
+                campo.type = "text";
+                botao.textContent = "🙈";
+            } else {
+                campo.type = "password";
+                botao.textContent = "👁️";
+            }
+        }
+    </script>
 </body>
 </html>

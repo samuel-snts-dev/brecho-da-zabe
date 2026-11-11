@@ -61,16 +61,35 @@
             <input type="text" name="usuario" value="{{ config.usuario }}" required>
 
             <label>Nova senha</label>
-            <input type="password" name="nova_senha" placeholder="Deixe em branco pra não trocar">
+            <input type="password" name="nova_senha" class="campo-senha" placeholder="Deixe em branco pra não trocar">
 
             <label>Confirmar nova senha</label>
-            <input type="password" name="confirmar_senha" placeholder="Digite a nova senha de novo">
+            <input type="password" name="confirmar_senha" class="campo-senha" placeholder="Digite a nova senha de novo">
 
             <label>Senha atual (obrigatória pra salvar)</label>
-            <input type="password" name="senha_atual" required>
+            <input type="password" name="senha_atual" class="campo-senha" required>
+
+            <label class="mostrar-senhas">
+                <input type="checkbox" onchange="mostrarSenhas(this)"> Mostrar senhas
+            </label>
 
             <button type="submit">Salvar conta</button>
         </form>
     </main>
+
+    <script>
+        // mostra ou esconde todos os campos de senha de uma vez
+        function mostrarSenhas(caixinha) {
+            let campos = document.querySelectorAll(".campo-senha");
+
+            for (let campo of campos) {
+                if (caixinha.checked) {
+                    campo.type = "text";
+                } else {
+                    campo.type = "password";
+                }
+            }
+        }
+    </script>
 </body>
 </html>
