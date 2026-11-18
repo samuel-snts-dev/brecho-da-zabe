@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
 import os
+import time
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "chave-so-pra-testar-no-meu-pc")
@@ -30,13 +31,38 @@ os.makedirs(PASTA_BANNERS, exist_ok=True)
 def carregar_pecas():
     if os.path.exists(ARQUIVO):
         with open(ARQUIVO, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+            pecas = json.load(f)
+    else:
+        pecas = []
+
+    # peças antigas tinham só "foto"; transforma numa lista "fotos"
+    for peca in pecas:
+        if "fotos" not in peca:
+            peca["fotos"] = [peca["foto"]]
+
+    return pecas
 
 
 def salvar_pecas(pecas):
     with open(ARQUIVO, "w", encoding="utf-8") as f:
         json.dump(pecas, f, ensure_ascii=False, indent=4)
+
+
+def salvar_fotos(arquivos):
+    # salva várias fotos na pasta e devolve a lista com os nomes
+    nomes = []
+    numero = 0
+    agora = str(int(time.time()))
+
+    for arquivo in arquivos:
+        if arquivo.filename != "":
+            # coloca números na frente pra duas fotos com o mesmo nome não se substituírem
+            nome = agora + "_" + str(numero) + "_" + secure_filename(arquivo.filename)
+            arquivo.save(os.path.join(PASTA_FOTOS, nome))
+            nomes.append(nome)
+            numero = numero + 1
+
+    return nomes
 
 
 # ---------- BANNERS (ler e salvar) ----------
@@ -155,9 +181,8 @@ def adicionar():
 
     pecas = carregar_pecas()
 
-    foto = request.files["foto"]
-    nome_foto = secure_filename(foto.filename)
-    foto.save(os.path.join(PASTA_FOTOS, nome_foto))
+    # getlist pega TODAS as fotos escolhidas, não só uma
+    fotos = salvar_fotos(request.files.getlist("fotos"))
 
     # troca vírgula por ponto, pra aceitar "45,00"
     preco = float(request.form["preco"].replace(",", "."))
@@ -168,7 +193,7 @@ def adicionar():
         "preco": preco,
         "promocao": 0,
         "categoria": request.form["categoria"],
-        "foto": nome_foto,
+        "fotos": fotos,
         "vendida": False,
     }
     pecas.append(peca)
@@ -219,12 +244,23 @@ def editar(numero):
         peca["preco"] = float(request.form["preco"].replace(",", "."))
         peca["categoria"] = request.form["categoria"]
 
-        # só troca a foto se ela escolheu uma nova
-        foto = request.files["foto"]
-        if foto.filename != "":
-            nome_foto = secure_filename(foto.filename)
-            foto.save(os.path.join(PASTA_FOTOS, nome_foto))
-            peca["foto"] = nome_foto
+        # fotos que ela marcou pra remover
+        remover = request.form.getlist("remover_fotos")
+
+        # guarda só as fotos que NÃO foram marcadas
+        fotos_que_ficam = []
+        for foto in peca["fotos"]:
+            if foto not in remover:
+                fotos_que_ficam.append(foto)
+
+        # adiciona as fotos novas no final
+        fotos_novas = salvar_fotos(request.files.getlist("fotos"))
+        for foto in fotos_novas:
+            fotos_que_ficam.append(foto)
+
+        # a peça precisa ter pelo menos 1 foto; se ficaria sem nenhuma, mantém as antigas
+        if len(fotos_que_ficam) > 0:
+            peca["fotos"] = fotos_que_ficam
 
         salvar_pecas(pecas)
         return redirect("/admin")
@@ -301,8 +337,8 @@ def configuracoes():
         if nome_loja != "":
             config["nome_loja"] = nome_loja
 
-        config["endereco"] = request.form["endereco"].strip()
         config["subtitulo"] = request.form["subtitulo"].strip()
+        config["endereco"] = request.form["endereco"].strip()
 
         # tira o @ se ela digitar, e os espaços
         config["instagram"] = request.form["instagram"].replace("@", "").strip()

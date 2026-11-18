@@ -789,3 +789,97 @@ footer .link-admin {
     color: #ccc;
     cursor: pointer;
 }
+
+/* ---------- CARROSSEL DOS CARDS ---------- */
+
+.card-carrossel {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.card-foto {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.8s;
+}
+
+.card-foto.ativa {
+    opacity: 1;
+}
+
+.card-seta {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 14px;
+    padding: 6px 11px;
+    border-radius: 50%;
+}
+
+.card-seta:hover {
+    background-color: #C45A2B;
+}
+
+.card-seta-esquerda {
+    left: 8px;
+}
+
+.card-seta-direita {
+    right: 8px;
+}
+
+.card-contador {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+/* ---------- PRÉVIA DE VÁRIAS FOTOS ---------- */
+
+.previas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.previa-mini {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+/* ---------- REMOVER FOTOS NO EDITAR ---------- */
+
+.foto-editar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+.foto-editar span {
+    font-size: 12px;
+    color: #ccc;
+}
+
+/* deixa a foto apagadinha quando está marcada pra remover */
+.foto-editar:has(input:checked) img {
+    opacity: 0.3;
+}

@@ -38,11 +38,21 @@
                 {% endfor %}
             </select>
 
-            <label>Foto atual</label>
-            <img src="{{ url_for('static', filename='fotos/' + peca.foto) }}" alt="{{ peca.nome }}" class="foto-atual" id="previa-editar">
+            <label>Fotos atuais (marque as que quer tirar)</label>
+            <div class="previas">
+                {% for foto in peca.fotos %}
+                    <label class="foto-editar">
+                        <img src="{{ url_for('static', filename='fotos/' + foto) }}" alt="{{ peca.nome }}" class="previa-mini">
+                        <span>
+                            <input type="checkbox" name="remover_fotos" value="{{ foto }}"> Remover
+                        </span>
+                    </label>
+                {% endfor %}
+            </div>
 
-            <label>Trocar foto (opcional)</label>
-            <input type="file" name="foto" accept="image/*" onchange="mostrarPrevia(this, 'previa-editar')">
+            <label>Adicionar mais fotos (opcional)</label>
+            <input type="file" name="fotos" accept="image/*" multiple onchange="mostrarPrevias(this, 'previas-editar')">
+            <div id="previas-editar" class="previas"></div>
 
             <button type="submit">Salvar alterações</button>
             <a href="/admin" class="link-cancelar">Cancelar</a>
@@ -50,16 +60,16 @@
     </main>
 
     <script>
-        // mostra a imagem escolhida antes de enviar
-        function mostrarPrevia(campo, idImagem) {
-            let imagem = document.getElementById(idImagem);
-            let arquivo = campo.files[0];
+        // prévia de VÁRIAS imagens
+        function mostrarPrevias(campo, idCaixa) {
+            let caixa = document.getElementById(idCaixa);
+            caixa.innerHTML = "";   // limpa as prévias antigas
 
-            if (arquivo) {
+            for (let arquivo of campo.files) {
+                let imagem = document.createElement("img");
                 imagem.src = URL.createObjectURL(arquivo);
-                imagem.style.display = "block";
-            } else {
-                imagem.style.display = "none";
+                imagem.className = "previa-mini";
+                caixa.appendChild(imagem);
             }
         }
     </script>

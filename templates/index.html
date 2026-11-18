@@ -51,7 +51,20 @@
         {% if pecas %}
             {% for peca in pecas %}
             <div class="card">
-                <img src="{{ url_for('static', filename='fotos/' + peca.foto) }}" alt="{{ peca.nome }}">
+
+                <!-- carrossel de fotos da peça -->
+                <div class="card-carrossel">
+                    {% for foto in peca.fotos %}
+                        <img src="{{ url_for('static', filename='fotos/' + foto) }}" class="card-foto {% if loop.first %}ativa{% endif %}" alt="{{ peca.nome }}">
+                    {% endfor %}
+
+                    {% if peca.fotos|length > 1 %}
+                        <button type="button" class="card-seta card-seta-esquerda" onclick="clicarSeta(this, -1)">&#10094;</button>
+                        <button type="button" class="card-seta card-seta-direita" onclick="clicarSeta(this, 1)">&#10095;</button>
+                        <span class="card-contador">1/{{ peca.fotos|length }}</span>
+                    {% endif %}
+                </div>
+
                 <h2>{{ peca.nome }}</h2>
                 <p class="categoria-card">{{ peca.categoria }}</p>
                 <p>Tamanho: {{ peca.tamanho }}</p>
@@ -103,9 +116,11 @@
         <a href="/login" class="link-admin">Área da loja</a>
     </footer>
 
-    <!-- ---------- SCRIPT DO CARROSSEL ---------- -->
+    <!-- ---------- SCRIPTS ---------- -->
 
     <script>
+        // ---------- carrossel do banner ----------
+
         let slides = document.querySelectorAll(".slide");
         let atual = 0;
 
@@ -123,18 +138,58 @@
             mostrar(proximo);
         }
 
-        function voltar() {
-            let anterior = atual - 1;
-            if (anterior < 0) {
-                anterior = slides.length - 1;
-            }
-            mostrar(anterior);
-        }
-
         // só fica trocando se tiver mais de 1 banner
         if (slides.length > 1) {
             setInterval(avancar, 5000);
         }
+
+        // ---------- carrossel das fotos de cada peça ----------
+
+        // troca a foto de UM card (direcao: 1 = próxima, -1 = anterior)
+        function trocarFoto(caixa, direcao) {
+            let fotos = caixa.querySelectorAll(".card-foto");
+            let contador = caixa.querySelector(".card-contador");
+
+            // descobre qual foto está aparecendo agora
+            let atualCard = 0;
+            for (let i = 0; i < fotos.length; i++) {
+                if (fotos[i].classList.contains("ativa")) {
+                    atualCard = i;
+                }
+            }
+
+            // calcula a próxima, voltando pro começo/fim quando passa do limite
+            let nova = atualCard + direcao;
+            if (nova >= fotos.length) {
+                nova = 0;
+            }
+            if (nova < 0) {
+                nova = fotos.length - 1;
+            }
+
+            fotos[atualCard].classList.remove("ativa");
+            fotos[nova].classList.add("ativa");
+            contador.textContent = (nova + 1) + "/" + fotos.length;
+        }
+
+        // quando clica numa setinha
+        function clicarSeta(botao, direcao) {
+            let caixa = botao.parentElement;
+            trocarFoto(caixa, direcao);
+        }
+
+        // passa sozinho todos os cards que têm mais de 1 foto
+        function avancarCards() {
+            let caixas = document.querySelectorAll(".card-carrossel");
+
+            for (let caixa of caixas) {
+                if (caixa.querySelectorAll(".card-foto").length > 1) {
+                    trocarFoto(caixa, 1);
+                }
+            }
+        }
+
+        setInterval(avancarCards, 3500);
     </script>
 
 </body>
